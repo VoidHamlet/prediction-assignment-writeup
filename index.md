@@ -26,10 +26,10 @@ Platform: x86_64-mingw32 (Windows 10), x86_64-apple-darwin13.4.0 (OS-X)<br />
 
 R packages to be run:<br />
 
-`library(caret)
-library(doParallel)
-library(dplyr)
-library(randomForest)`
+`library(caret)`<br />
+`library(doParallel)`<br />
+`library(dplyr)`<br />
+`library(randomForest)`<br />
 
 **Note:** ggplot2, lattice are caret package dependencies and will be loaded together with it.<br />
 
@@ -43,15 +43,15 @@ On reviewing the data, we see numerous “division by zero” (#DIV/0!) entries.
 
 We load the training and testing data sets to appropriately named data frame variables:<br />
 
-`trainingPMLinit <- read.csv('pml-training.csv', na.strings=c("NA", "#DIV/0!"))
-testingPMLinit <- read.csv('pml-testing.csv', na.strings=c("NA", "#DIV/0!"))`
+`trainingPMLinit <- read.csv('pml-training.csv', na.strings=c("NA", "#DIV/0!"))`<br />
+`testingPMLinit <- read.csv('pml-testing.csv', na.strings=c("NA", "#DIV/0!"))`<br />
 
 We see they contain 160 variables each:<br />
 
-`dim(trainingPMLinit)
-[1] 19622   160
-dim(testingPMLinit)
-[1]  20 160`
+`dim(trainingPMLinit)`<br />
+`[1] 19622   160`<br />
+`dim(testingPMLinit)`<br />
+`[1]  20 160`<br />
 
 ## Disposing of Out of Scope Variables
 
@@ -61,73 +61,73 @@ With that in mind, on running the names() function over the training and testing
 
 <details>
   <summary>Click to expand</summary>
-`names(trainingPMLinit)
-  [1] "X"                        "user_name"                "raw_timestamp_part_1"     "raw_timestamp_part_2"    
-  [5] "cvtd_timestamp"           "new_window"               "num_window"               "roll_belt"               
-  [9] "pitch_belt"               "yaw_belt"                 "total_accel_belt"         "kurtosis_roll_belt"      
- [13] "kurtosis_picth_belt"      "kurtosis_yaw_belt"        "skewness_roll_belt"       "skewness_roll_belt.1"    
- [17] "skewness_yaw_belt"        "max_roll_belt"            "max_picth_belt"           "max_yaw_belt"            
- [21] "min_roll_belt"            "min_pitch_belt"           "min_yaw_belt"             "amplitude_roll_belt"     
- [25] "amplitude_pitch_belt"     "amplitude_yaw_belt"       "var_total_accel_belt"     "avg_roll_belt"           
- [29] "stddev_roll_belt"         "var_roll_belt"            "avg_pitch_belt"           "stddev_pitch_belt"       
- [33] "var_pitch_belt"           "avg_yaw_belt"             "stddev_yaw_belt"          "var_yaw_belt"            
- [37] "gyros_belt_x"             "gyros_belt_y"             "gyros_belt_z"             "accel_belt_x"            
- [41] "accel_belt_y"             "accel_belt_z"             "magnet_belt_x"            "magnet_belt_y"           
- [45] "magnet_belt_z"            "roll_arm"                 "pitch_arm"                "yaw_arm"                 
- [49] "total_accel_arm"          "var_accel_arm"            "avg_roll_arm"             "stddev_roll_arm"         
- [53] "var_roll_arm"             "avg_pitch_arm"            "stddev_pitch_arm"         "var_pitch_arm"           
- [57] "avg_yaw_arm"              "stddev_yaw_arm"           "var_yaw_arm"              "gyros_arm_x"             
- [61] "gyros_arm_y"              "gyros_arm_z"              "accel_arm_x"              "accel_arm_y"             
- [65] "accel_arm_z"              "magnet_arm_x"             "magnet_arm_y"             "magnet_arm_z"            
- [69] "kurtosis_roll_arm"        "kurtosis_picth_arm"       "kurtosis_yaw_arm"         "skewness_roll_arm"       
- [73] "skewness_pitch_arm"       "skewness_yaw_arm"         "max_roll_arm"             "max_picth_arm"           
- [77] "max_yaw_arm"              "min_roll_arm"             "min_pitch_arm"            "min_yaw_arm"             
- [81] "amplitude_roll_arm"       "amplitude_pitch_arm"      "amplitude_yaw_arm"        "roll_dumbbell"           
- [85] "pitch_dumbbell"           "yaw_dumbbell"             "kurtosis_roll_dumbbell"   "kurtosis_picth_dumbbell" 
- [89] "kurtosis_yaw_dumbbell"    "skewness_roll_dumbbell"   "skewness_pitch_dumbbell"  "skewness_yaw_dumbbell"   
- [93] "max_roll_dumbbell"        "max_picth_dumbbell"       "max_yaw_dumbbell"         "min_roll_dumbbell"       
- [97] "min_pitch_dumbbell"       "min_yaw_dumbbell"         "amplitude_roll_dumbbell"  "amplitude_pitch_dumbbell"
-[101] "amplitude_yaw_dumbbell"   "total_accel_dumbbell"     "var_accel_dumbbell"       "avg_roll_dumbbell"       
-[105] "stddev_roll_dumbbell"     "var_roll_dumbbell"        "avg_pitch_dumbbell"       "stddev_pitch_dumbbell"   
-[109] "var_pitch_dumbbell"       "avg_yaw_dumbbell"         "stddev_yaw_dumbbell"      "var_yaw_dumbbell"        
-[113] "gyros_dumbbell_x"         "gyros_dumbbell_y"         "gyros_dumbbell_z"         "accel_dumbbell_x"        
-[117] "accel_dumbbell_y"         "accel_dumbbell_z"         "magnet_dumbbell_x"        "magnet_dumbbell_y"       
-[121] "magnet_dumbbell_z"        "roll_forearm"             "pitch_forearm"            "yaw_forearm"             
-[125] "kurtosis_roll_forearm"    "kurtosis_picth_forearm"   "kurtosis_yaw_forearm"     "skewness_roll_forearm"   
-[129] "skewness_pitch_forearm"   "skewness_yaw_forearm"     "max_roll_forearm"         "max_picth_forearm"       
-[133] "max_yaw_forearm"          "min_roll_forearm"         "min_pitch_forearm"        "min_yaw_forearm"         
-[137] "amplitude_roll_forearm"   "amplitude_pitch_forearm"  "amplitude_yaw_forearm"    "total_accel_forearm"     
-[141] "var_accel_forearm"        "avg_roll_forearm"         "stddev_roll_forearm"      "var_roll_forearm"        
-[145] "avg_pitch_forearm"        "stddev_pitch_forearm"     "var_pitch_forearm"        "avg_yaw_forearm"         
-[149] "stddev_yaw_forearm"       "var_yaw_forearm"          "gyros_forearm_x"          "gyros_forearm_y"         
-[153] "gyros_forearm_z"          "accel_forearm_x"          "accel_forearm_y"          "accel_forearm_z"         
-[157] "magnet_forearm_x"         "magnet_forearm_y"         "magnet_forearm_z"         "classe"  `
+names(trainingPMLinit)<br />
+  [1] "X"                        "user_name"                "raw_timestamp_part_1"     "raw_timestamp_part_2"  <br />  
+  [5] "cvtd_timestamp"           "new_window"               "num_window"               "roll_belt"             <br /> 
+  [9] "pitch_belt"               "yaw_belt"                 "total_accel_belt"         "kurtosis_roll_belt"      <br />
+ [13] "kurtosis_picth_belt"      "kurtosis_yaw_belt"        "skewness_roll_belt"       "skewness_roll_belt.1"    <br />
+ [17] "skewness_yaw_belt"        "max_roll_belt"            "max_picth_belt"           "max_yaw_belt"            <br />
+ [21] "min_roll_belt"            "min_pitch_belt"           "min_yaw_belt"             "amplitude_roll_belt"     <br />
+ [25] "amplitude_pitch_belt"     "amplitude_yaw_belt"       "var_total_accel_belt"     "avg_roll_belt"           <br />
+ [29] "stddev_roll_belt"         "var_roll_belt"            "avg_pitch_belt"           "stddev_pitch_belt"       <br />
+ [33] "var_pitch_belt"           "avg_yaw_belt"             "stddev_yaw_belt"          "var_yaw_belt"            <br />
+ [37] "gyros_belt_x"             "gyros_belt_y"             "gyros_belt_z"             "accel_belt_x"            <br />
+ [41] "accel_belt_y"             "accel_belt_z"             "magnet_belt_x"            "magnet_belt_y"           <br />
+ [45] "magnet_belt_z"            "roll_arm"                 "pitch_arm"                "yaw_arm"                 <br />
+ [49] "total_accel_arm"          "var_accel_arm"            "avg_roll_arm"             "stddev_roll_arm"         <br />
+ [53] "var_roll_arm"             "avg_pitch_arm"            "stddev_pitch_arm"         "var_pitch_arm"           <br />
+ [57] "avg_yaw_arm"              "stddev_yaw_arm"           "var_yaw_arm"              "gyros_arm_x"             <br />
+ [61] "gyros_arm_y"              "gyros_arm_z"              "accel_arm_x"              "accel_arm_y"             <br />
+ [65] "accel_arm_z"              "magnet_arm_x"             "magnet_arm_y"             "magnet_arm_z"            <br />
+ [69] "kurtosis_roll_arm"        "kurtosis_picth_arm"       "kurtosis_yaw_arm"         "skewness_roll_arm"       <br />
+ [73] "skewness_pitch_arm"       "skewness_yaw_arm"         "max_roll_arm"             "max_picth_arm"           <br />
+ [77] "max_yaw_arm"              "min_roll_arm"             "min_pitch_arm"            "min_yaw_arm"             <br />
+ [81] "amplitude_roll_arm"       "amplitude_pitch_arm"      "amplitude_yaw_arm"        "roll_dumbbell"           <br />
+ [85] "pitch_dumbbell"           "yaw_dumbbell"             "kurtosis_roll_dumbbell"   "kurtosis_picth_dumbbell" <br />
+ [89] "kurtosis_yaw_dumbbell"    "skewness_roll_dumbbell"   "skewness_pitch_dumbbell"  "skewness_yaw_dumbbell"   <br />
+ [93] "max_roll_dumbbell"        "max_picth_dumbbell"       "max_yaw_dumbbell"         "min_roll_dumbbell"       <br />
+ [97] "min_pitch_dumbbell"       "min_yaw_dumbbell"         "amplitude_roll_dumbbell"  "amplitude_pitch_dumbbell"<br />
+[101] "amplitude_yaw_dumbbell"   "total_accel_dumbbell"     "var_accel_dumbbell"       "avg_roll_dumbbell"       <br />
+[105] "stddev_roll_dumbbell"     "var_roll_dumbbell"        "avg_pitch_dumbbell"       "stddev_pitch_dumbbell"   <br />
+[109] "var_pitch_dumbbell"       "avg_yaw_dumbbell"         "stddev_yaw_dumbbell"      "var_yaw_dumbbell"        <br />
+[113] "gyros_dumbbell_x"         "gyros_dumbbell_y"         "gyros_dumbbell_z"         "accel_dumbbell_x"        <br />
+[117] "accel_dumbbell_y"         "accel_dumbbell_z"         "magnet_dumbbell_x"        "magnet_dumbbell_y"       <br />
+[121] "magnet_dumbbell_z"        "roll_forearm"             "pitch_forearm"            "yaw_forearm"             <br />
+[125] "kurtosis_roll_forearm"    "kurtosis_picth_forearm"   "kurtosis_yaw_forearm"     "skewness_roll_forearm"   <br />
+[129] "skewness_pitch_forearm"   "skewness_yaw_forearm"     "max_roll_forearm"         "max_picth_forearm"       <br />
+[133] "max_yaw_forearm"          "min_roll_forearm"         "min_pitch_forearm"        "min_yaw_forearm"         <br />
+[137] "amplitude_roll_forearm"   "amplitude_pitch_forearm"  "amplitude_yaw_forearm"    "total_accel_forearm"     <br />
+[141] "var_accel_forearm"        "avg_roll_forearm"         "stddev_roll_forearm"      "var_roll_forearm"        <br />
+[145] "avg_pitch_forearm"        "stddev_pitch_forearm"     "var_pitch_forearm"        "avg_yaw_forearm"         <br />
+[149] "stddev_yaw_forearm"       "var_yaw_forearm"          "gyros_forearm_x"          "gyros_forearm_y"         <br />
+[153] "gyros_forearm_z"          "accel_forearm_x"          "accel_forearm_y"          "accel_forearm_z"         <br />
+[157] "magnet_forearm_x"         "magnet_forearm_y"         "magnet_forearm_z"         "classe"  <br />
 </details>
 
 (Similarly for the testing data frame).<br />
 
-`trainingPMLinit <- trainingPMLinit[ , -c(1:7)]
-testingPMLinit <- testingPMLinit[ , -c(1:7)]`
+`trainingPMLinit <- trainingPMLinit[ , -c(1:7)]`<br />
+`testingPMLinit <- testingPMLinit[ , -c(1:7)]`<br />
 
 ## Disposing of Variables with NA Values
 
 Getting back to the NA, we can as well clear out the variables that contain mostly NA. Let’s see how many columns contain all NA and how many - any NA:<br />
 
-`trainingAllNA <- sapply(trainingPMLinit, function(x)all(is.na(x)))
-trainingAnyNA <- sapply(trainingPMLinit, function(x)any(is.na(x)))`
+`trainingAllNA <- sapply(trainingPMLinit, function(x)all(is.na(x)))`<br />
+`trainingAnyNA <- sapply(trainingPMLinit, function(x)any(is.na(x)))`<br />
 
-`compareAllAnyNA <- mapply(setdiff, trainingAllNA, trainingAnyNA)
-num.compareAllAnyNA <- sapply(compareAllAnyNA, length)`
+`compareAllAnyNA <- mapply(setdiff, trainingAllNA, trainingAnyNA)`<br />
+`num.compareAllAnyNA <- sapply(compareAllAnyNA, length)`<br />
 
 Reviewing the training data set as well as the output (num.compareAllAnyNA), it would seem that almost all columns containing NA values are likely to be all NA. We can therefore perform the below clean-up.<br />
 
-`trainingNA <- sapply(trainingPMLinit, function(x) mean(is.na(x))) > 0.95
-trainingPMLinit <- trainingPMLinit[ , !trainingNA]`
+`trainingNA <- sapply(trainingPMLinit, function(x) mean(is.na(x))) > 0.95`<br />
+`trainingPMLinit <- trainingPMLinit[ , !trainingNA]`<br />
 
 Reviewing the testing data set, all columns containing NA contain nothing else (all NA).<br />
 
-`testingNA <- apply(testingPMLinit, 2, function(c) sum(is.na(c)) == nrow(testingPMLinit))
-testingPMLinit <- testingPMLinit[ , !testingNA]`
+`testingNA <- apply(testingPMLinit, 2, function(c) sum(is.na(c)) == nrow(testingPMLinit))`<br />
+`testingPMLinit <- testingPMLinit[ , !testingNA]`<br />
 
 # Building and Evaluating a Model
 
@@ -147,10 +147,10 @@ With a data set of this size, we can afford more thorough training. We allocate 
 
 Note: At this step, we factor in the “classe” variable.<br />
 
-`set.seed(12354) # Seed set for reproducibility purposes
-inTrain <- createDataPartition(y = trainingPMLinit$classe, p = 0.75, list = FALSE)
-trainingPML <- trainingPMLinit[inTrain, ]
-testingPML <- trainingPMLinit[-inTrain, ]`
+`set.seed(12354) # Seed set for reproducibility purposes`<br />
+`inTrain <- createDataPartition(y = trainingPMLinit$classe, p = 0.75, list = FALSE)`<br />
+`trainingPML <- trainingPMLinit[inTrain, ]`<br />
+`testingPML <- trainingPMLinit[-inTrain, ]`<br />
 
 ## Training the Model
 
@@ -183,31 +183,31 @@ While caret allows for parallel processing and Random Forests are not resource-h
 
 In comparison, a 64-bit OS-X Macbook Air has no trouble handling the task.<br />
 
-`library(doParallel)
-cluster <- makeCluster(2)
-registerDoParallel(cluster)`
+`library(doParallel)`<br />
+`cluster <- makeCluster(2)`<br />
+`registerDoParallel(cluster)`<br />
 
-`model <- train(classe ~ ., data = trainingPML, method = 'rf', verbose = TRUE)`
+`model <- train(classe ~ ., data = trainingPML, method = 'rf', verbose = TRUE)`<br />
 
-`model
-Random Forest 
+`model`<br />
+`Random Forest `<br />
 
-14718 samples
-   52 predictor
-    5 classes: 'A', 'B', 'C', 'D', 'E'
+`14718 samples`<br />
+  ` 52 predictor`<br />
+  `  5 classes: 'A', 'B', 'C', 'D', 'E'`<br />
 
-No pre-processing
-Resampling: Bootstrapped (25 reps) 
-Summary of sample sizes: 14718, 14718, 14718, 14718, 14718, 14718, ... 
-Resampling results across tuning parameters:
+`No pre-processing`<br />
+`Resampling: Bootstrapped (25 reps) `<br />
+`Summary of sample sizes: 14718, 14718, 14718, 14718, 14718, 14718, ... `<br />
+`Resampling results across tuning parameters:`<br />
 
-  mtry  Accuracy   Kappa    
-   2    0.9886517  0.9856410
-  27    0.9894938  0.9867077
-  52    0.9824803  0.9778341
+`  mtry  Accuracy   Kappa    `<br />
+`   2    0.9886517  0.9856410`<br />
+`  27    0.9894938  0.9867077`<br />
+ ` 52    0.9824803  0.9778341`<br />
 
-Accuracy was used to select the optimal model using  the largest value.
-The final value used for the model was mtry = 27.`
+`Accuracy was used to select the optimal model using  the largest value.`<br />
+`The final value used for the model was mtry = 27.`<br />
 
 Best model accuracy as decided by caret (bestTune):<br />
 
@@ -234,70 +234,68 @@ At ~0.99 accuracy and under ~0.01 error rate, we will be hard-pressed to find a 
 
 We will apply our chosen model first to the testingPML set which we cut aside earlier from the training data (25%).<br />
 
-`testingPML_classesReference <- testingPML$classe; testingPML$classe <- NULL
+`testingPML_classesReference <- testingPML$classe; testingPML$classe <- NULL`
 
-testingPML_classesPredicted <- predict(model$finalModel, newdata = testingPML)
+`testingPML_classesPredicted <- predict(model$finalModel, newdata = testingPML)`
 
-testingPML_confusionMatrix <- confusionMatrix(data = testingPML_classesPredicted, reference = testingPML_classesReference)
+`testingPML_confusionMatrix <- confusionMatrix(data = testingPML_classesPredicted, reference = testingPML_classesReference)`
 
-OutOfSampleErrorRate  <- 1 - testingPML_confusionMatrix$overall['Accuracy']; names(OutOfSampleErrorRate) = 'ErrorRate'`
+`OutOfSampleErrorRate  <- 1 - testingPML_confusionMatrix$overall['Accuracy']; names(OutOfSampleErrorRate) = 'ErrorRate'`
 
-`testingPML_confusionMatrix
+`testingPML_confusionMatrix`
 
-Confusion Matrix and Statistics
+`Confusion Matrix and Statistics`
 
-          Reference
-Prediction    A    B    C    D    E
-         A 1393    7    0    0    0
-         B    0  940    1    0    0
-         C    1    2  852   12    1
-         D    0    0    2  792    2
-         E    1    0    0    0  898
+`         Reference`
+`Prediction    A    B    C    D    E`
+ `        A 1393    7    0    0    0`
+ `        B    0  940    1    0    0`
+ `        C    1    2  852   12    1`
+ `        D    0    0    2  792    2`
+ `        E    1    0    0    0  898`
 
-Overall Statistics
+`Overall Statistics`
                                          
-               Accuracy : 0.9941         
-                 95% CI : (0.9915, 0.996)
-    No Information Rate : 0.2845         
-    P-Value [Acc > NIR] : < 2.2e-16      
+ `              Accuracy : 0.9941         `
+ `                95% CI : (0.9915, 0.996)`
+`    No Information Rate : 0.2845         `
+`    P-Value [Acc > NIR] : < 2.2e-16      `
                                          
-                  Kappa : 0.9925         
- Mcnemar's Test P-Value : NA             
+`                  Kappa : 0.9925         `
+` Mcnemar's Test P-Value : NA             `
 
-Statistics by Class:
+`Statistics by Class:`
 
-                     Class: A Class: B Class: C Class: D Class: E
-Sensitivity            0.9986   0.9905   0.9965   0.9851   0.9967
-Specificity            0.9980   0.9997   0.9960   0.9990   0.9998
-Pos Pred Value         0.9950   0.9989   0.9816   0.9950   0.9989
-Neg Pred Value         0.9994   0.9977   0.9993   0.9971   0.9993
-Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837
-Detection Rate         0.2841   0.1917   0.1737   0.1615   0.1831
-Detection Prevalence   0.2855   0.1919   0.1770   0.1623   0.1833
-Balanced Accuracy      0.9983   0.9951   0.9963   0.9920   0.9982`
+`                     Class: A Class: B Class: C Class: D Class: E`
+`Sensitivity            0.9986   0.9905   0.9965   0.9851   0.9967`
+`Specificity            0.9980   0.9997   0.9960   0.9990   0.9998`
+`Pos Pred Value         0.9950   0.9989   0.9816   0.9950   0.9989`
+`Neg Pred Value         0.9994   0.9977   0.9993   0.9971   0.9993`
+`Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837`
+`Detection Rate         0.2841   0.1917   0.1737   0.1615   0.1831`
+`Detection Prevalence   0.2855   0.1919   0.1770   0.1623   0.1833`
+`Balanced Accuracy      0.9983   0.9951   0.9963   0.9920   0.9982`
 
 We will also apply the same to the original testing data, arranged by problem_id.<br />
 
-`testingPMLinit <- arrange(testingPMLinit, problem_id)
-testingPMLinit_prediction <- predict(model$finalModel, newdata = testingPMLinit)`
+`testingPMLinit <- arrange(testingPMLinit, problem_id)`
+`testingPMLinit_prediction <- predict(model$finalModel, newdata = testingPMLinit)`
 
-`testingPMLinit_prediction 
+`testingPMLinit_prediction `
 
- 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
- B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B 
-Levels: A B C D E`
+` 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 `
+` B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B `
+`Levels: A B C D E`
 
 # Write Result to Files
 
 This will export the initial testing data predictions into indiviual files.<br />
 
-`testingPMLinit_writeFiles = function(x)
-    {
-  n = length(x)
-  for(i in 1:n)
-        {
-    filename = paste0("problem_id_", i, ".txt")
-    write.table(x[i], file=filename, quote=FALSE, row.names=FALSE, col.names=FALSE)
- 	      }
-     }
-testingPMLinit_writeFiles(testingPMLinit_prediction)`
+`testingPMLinit_writeFiles = function(x)`
+`    {`
+`  n = length(x)`
+`  for(i in 1:n){`
+   ` filename = paste0("problem_id_", i, ".txt")`
+  `  write.table(x[i], file=filename, quote=FALSE, row.names=FALSE, col.names=FALSE)}`
+  `   }`
+`testingPMLinit_writeFiles(testingPMLinit_prediction)`
