@@ -156,20 +156,20 @@ Note: At this step, we factor in the “classe” variable.<br />
 
 > Features of Random Forests
 
-> It is unexcelled in accuracy among current algorithms.
-> It runs efficiently on large data bases.
-> It can handle thousands of input variables without variable deletion.
-> It gives estimates of what variables are important in the classification.
-> It generates an internal unbiased estimate of the generalization error as the forest building progresses.
-> It has an effective method for estimating missing data and maintains accuracy when a large proportion of the data are missing.
-> It has methods for balancing error in class population unbalanced data sets.
-> Generated forests can be saved for future use on other data.
-> Prototypes are computed that give information about the relation between the variables and the classification.
-> It computes proximities between pairs of cases that can be used in clustering, locating outliers, or (by scaling) give interesting views of the data.
+> It is unexcelled in accuracy among current algorithms.<br />
+> It runs efficiently on large data bases.<br />
+> It can handle thousands of input variables without variable deletion.<br />
+> It gives estimates of what variables are important in the classification.<br />
+> It generates an internal unbiased estimate of the generalization error as the forest building progresses.<br />
+> It has an effective method for estimating missing data and maintains accuracy when a large proportion of the data are missing.<br />
+> It has methods for balancing error in class population unbalanced data sets.<br />
+> Generated forests can be saved for future use on other data.<br />
+> Prototypes are computed that give information about the relation between the variables and the classification.<br />
+> It computes proximities between pairs of cases that can be used in clustering, locating outliers, or (by scaling) give interesting views of the data.<br />
 > The capabilities of the above can be extended to unlabeled data, leading to unsupervised clustering, data views and outlier detection.
-> It offers an experimental method for detecting variable interactions.
+> It offers an experimental method for detecting variable interactions.<br />
 
-> Remarks
+> Remarks<br />
 
 > Random forests does not overfit. You can run as many trees as you want. It is fast. Running on a data set with 50,000 cases and 100 variables, it produced 100 trees in 11 minutes on a 800Mhz machine. For large data sets the major memory requirement is the storage of the data itself, and three integer arrays with the same dimensions as the data. If proximities are calculated, storage requirements grow as the number of cases times the number of trees.<br />
 
@@ -221,12 +221,12 @@ Out of Bag (OOB) error rate of the model based on number of trees used (ntree):<
 
 The results:<br />
 
-`bestRFmodel`
-`[1] 0.9894938`
+`bestRFmodel`<br />
+`[1] 0.9894938`<br />
 
-`rateOOBerror`
-`        OOB `
-`0.005639353`
+`rateOOBerror`<br />
+`        OOB `<br />
+`0.005639353`<br />
 
 At ~0.99 accuracy and under ~0.01 error rate, we will be hard-pressed to find a better method.<br />
 
@@ -234,68 +234,68 @@ At ~0.99 accuracy and under ~0.01 error rate, we will be hard-pressed to find a 
 
 We will apply our chosen model first to the testingPML set which we cut aside earlier from the training data (25%).<br />
 
-`testingPML_classesReference <- testingPML$classe; testingPML$classe <- NULL`
+`testingPML_classesReference <- testingPML$classe; testingPML$classe <- NULL`<br />
 
-`testingPML_classesPredicted <- predict(model$finalModel, newdata = testingPML)`
+`testingPML_classesPredicted <- predict(model$finalModel, newdata = testingPML)`<br />
 
-`testingPML_confusionMatrix <- confusionMatrix(data = testingPML_classesPredicted, reference = testingPML_classesReference)`
+`testingPML_confusionMatrix <- confusionMatrix(data = testingPML_classesPredicted, reference = testingPML_classesReference)`<br />
 
-`OutOfSampleErrorRate  <- 1 - testingPML_confusionMatrix$overall['Accuracy']; names(OutOfSampleErrorRate) = 'ErrorRate'`
+`OutOfSampleErrorRate  <- 1 - testingPML_confusionMatrix$overall['Accuracy']; names(OutOfSampleErrorRate) = 'ErrorRate'`<br />
 
-`testingPML_confusionMatrix`
+`testingPML_confusionMatrix`<br />
 
-`Confusion Matrix and Statistics`
+`Confusion Matrix and Statistics`<br />
 
-`         Reference`
-`Prediction    A    B    C    D    E`
- `        A 1393    7    0    0    0`
- `        B    0  940    1    0    0`
- `        C    1    2  852   12    1`
- `        D    0    0    2  792    2`
- `        E    1    0    0    0  898`
+`         Reference`<br />
+`Prediction    A    B    C    D    E`<br />
+ `        A 1393    7    0    0    0`<br />
+ `        B    0  940    1    0    0`<br />
+ `        C    1    2  852   12    1`<br />
+ `        D    0    0    2  792    2`<br />
+ `        E    1    0    0    0  898`<br />
 
-`Overall Statistics`
+`Overall Statistics`<br />
                                          
- `              Accuracy : 0.9941         `
- `                95% CI : (0.9915, 0.996)`
-`    No Information Rate : 0.2845         `
-`    P-Value [Acc > NIR] : < 2.2e-16      `
-                                         
-`                  Kappa : 0.9925         `
-` Mcnemar's Test P-Value : NA             `
+ `              Accuracy : 0.9941         `<br />
+ `                95% CI : (0.9915, 0.996)`<br />
+`    No Information Rate : 0.2845         `<br />
+`    P-Value [Acc > NIR] : < 2.2e-16      `<br />
 
-`Statistics by Class:`
+`                  Kappa : 0.9925         `<br />
+` Mcnemar's Test P-Value : NA             `<br />
 
-`                     Class: A Class: B Class: C Class: D Class: E`
-`Sensitivity            0.9986   0.9905   0.9965   0.9851   0.9967`
-`Specificity            0.9980   0.9997   0.9960   0.9990   0.9998`
-`Pos Pred Value         0.9950   0.9989   0.9816   0.9950   0.9989`
-`Neg Pred Value         0.9994   0.9977   0.9993   0.9971   0.9993`
-`Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837`
-`Detection Rate         0.2841   0.1917   0.1737   0.1615   0.1831`
-`Detection Prevalence   0.2855   0.1919   0.1770   0.1623   0.1833`
-`Balanced Accuracy      0.9983   0.9951   0.9963   0.9920   0.9982`
+`Statistics by Class:`<br />
+
+`                     Class: A Class: B Class: C Class: D Class: E`<br />
+`Sensitivity            0.9986   0.9905   0.9965   0.9851   0.9967`<br />
+`Specificity            0.9980   0.9997   0.9960   0.9990   0.9998`<br />
+`Pos Pred Value         0.9950   0.9989   0.9816   0.9950   0.9989`<br />
+`Neg Pred Value         0.9994   0.9977   0.9993   0.9971   0.9993`<br />
+`Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837`<br />
+`Detection Rate         0.2841   0.1917   0.1737   0.1615   0.1831`<br />
+`Detection Prevalence   0.2855   0.1919   0.1770   0.1623   0.1833`<br />
+`Balanced Accuracy      0.9983   0.9951   0.9963   0.9920   0.9982`<br />
 
 We will also apply the same to the original testing data, arranged by problem_id.<br />
 
-`testingPMLinit <- arrange(testingPMLinit, problem_id)`
-`testingPMLinit_prediction <- predict(model$finalModel, newdata = testingPMLinit)`
+`testingPMLinit <- arrange(testingPMLinit, problem_id)`<br />
+`testingPMLinit_prediction <- predict(model$finalModel, newdata = testingPMLinit)`<br />
 
-`testingPMLinit_prediction `
+`testingPMLinit_prediction `<br />
 
-` 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 `
-` B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B `
-`Levels: A B C D E`
+` 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 `<br />
+` B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B `<br />
+`Levels: A B C D E`<br />
 
 # Write Result to Files
 
 This will export the initial testing data predictions into indiviual files.<br />
 
-`testingPMLinit_writeFiles = function(x)`
-`    {`
-`  n = length(x)`
-`  for(i in 1:n){`
-   ` filename = paste0("problem_id_", i, ".txt")`
-  `  write.table(x[i], file=filename, quote=FALSE, row.names=FALSE, col.names=FALSE)}`
-  `   }`
-`testingPMLinit_writeFiles(testingPMLinit_prediction)`
+`testingPMLinit_writeFiles = function(x)`<br />
+`    {`<br />
+`  n = length(x)`<br />
+`  for(i in 1:n){`<br />
+   ` filename = paste0("problem_id_", i, ".txt")`<br />
+  `  write.table(x[i], file=filename, quote=FALSE, row.names=FALSE, col.names=FALSE)}`<br />
+  `   }`<br />
+`testingPMLinit_writeFiles(testingPMLinit_prediction)`<br />
